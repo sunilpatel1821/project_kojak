@@ -6,7 +6,7 @@ import numpy as np
 from keras.models import load_model
 from phue import Bridge
 from soco import SoCo
-import pygame
+# import pygame
 import time
 
 # General Settings
@@ -39,7 +39,7 @@ smart_home = True
 
 # Philips Hue Settings
 bridge_ip = '192.168.0.103'
-b = Bridge(bridge_ip)
+# b = Bridge(bridge_ip)
 on_command = {'transitiontime': 0, 'on': True, 'bri': 254}
 off_command = {'transitiontime': 0, 'on': False, 'bri': 254}
 
@@ -53,7 +53,7 @@ gesture_names = {0: 'Fist',
                  3: 'Palm',
                  4: 'Peace'}
 
-model = load_model('/Users/brenner/project_kojak/models/VGG_cross_validated.h5')
+model = load_model('models/VGG_cross_validated.h5')
 
 
 def predict_rgb_image(img):
@@ -133,7 +133,7 @@ while camera.isOpened():
 
         # get the contours
         thresh1 = copy.deepcopy(thresh)
-        _, contours, hierarchy = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         length = len(contours)
         maxArea = -1
         if length > 0:
@@ -158,17 +158,17 @@ while camera.isOpened():
         break
     elif k == ord('b'):  # press 'b' to capture the background
         bgModel = cv2.createBackgroundSubtractorMOG2(0, bgSubThreshold)
-        b.set_light(6, on_command)
+        # b. set_light(6, on_command)
         time.sleep(2)
         isBgCaptured = 1
         print('Background captured')
-        pygame.init()
-        pygame.mixer.init()
-        pygame.mixer.music.load('/Users/brenner/1-05 Virtual Insanity.mp3')
-        pygame.mixer.music.set_volume(vol.level)
-        pygame.mixer.music.play()
-        pygame.mixer.music.set_pos(50)
-        pygame.mixer.music.pause()
+        # pygame.init()
+        # pygame.mixer.init()
+        # pygame.mixer.music.load('/Users/brenner/1-05 Virtual Insanity.mp3')
+        # pygame.mixer.music.set_volume(vol.level)
+        # pygame.mixer.music.play()
+        # pygame.mixer.music.set_pos(50)
+        # pygame.mixer.music.pause()
 
     elif k == ord('r'):  # press 'r' to reset the background
         time.sleep(1)
@@ -191,7 +191,7 @@ while camera.isOpened():
                     action = "Lights on, music on"
 
                     # sonos.play()
-                    pygame.mixer.music.unpause()
+                    # pygame.mixer.music.unpause()
                 # Turn off smart home actions if devices are not responding
                 except ConnectionError:
                     smart_home = False
@@ -200,9 +200,9 @@ while camera.isOpened():
             elif prediction == 'Fist':
                 try:
                     action = 'Lights off, music off'
-                    b.set_light(6, off_command)
+                    # b.set_light(6, off_command)
                     # sonos.pause()
-                    pygame.mixer.music.pause()
+                    # pygame.mixer.music.pause()
                 except ConnectionError:
                     smart_home = False
                     pass
@@ -212,7 +212,7 @@ while camera.isOpened():
                     action = 'Volume down'
                     # sonos.volume -= 15
                     vol.decrease(0.2)
-                    pygame.mixer.music.set_volume(vol.level)
+                    # pygame.mixer.music.set_volume(vol.level)
                 except ConnectionError:
                     smart_home = False
                     pass
@@ -222,7 +222,7 @@ while camera.isOpened():
                     action = 'Volume up'
                     # sonos.volume += 15
                     vol.increase(0.2)
-                    pygame.mixer.music.set_volume(vol.level)
+                    # pygame.mixer.music.set_volume(vol.level)
                 except ConnectionError:
                     smart_home = False
                     pass
